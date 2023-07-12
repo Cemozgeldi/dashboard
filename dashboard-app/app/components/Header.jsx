@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { UserButton, auth } from "@clerk/nextjs";
 
 import React from "react";
 
 const Header = () => {
+  const { userId } = auth();
+
   return (
     <>
       {/* we create this component with a fragment */}
@@ -19,15 +22,36 @@ const Header = () => {
             </div>
           </Link>
         </div>
-        <div className="text-white">
-          {" "}
+        <div className="text-white flex items-center">
+          {!userId && (
+            <>
+              <Link
+                href="/sign-in"
+                className="text-gray-300 hover:text-white mr-4"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/sign-up"
+                className="text-gray-300 hover:text-white mr-4"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}{" "}
           {/* we create a sign in and sign up links in this div */}
-          <Link href="/sign-in" className="text-gray-300 hover:text-white mr-4">
-            Sign In
-          </Link>
-          <Link href="/sign-up" className="text-gray-300 hover:text-white mr-4">
-            Sign Up
-          </Link>
+          {userId && (
+            <Link
+              href="profile"
+              className="text-gray-300 hover:text-white mr-4"
+            >
+              Profile
+            </Link>
+          )}
+          <div className="ml-auto">
+            <UserButton afterSignOutUrl="/" />{" "}
+            {/* we create a user button.After the click it's rotate you to the home page.It's gives as a little avatar. */}
+          </div>
         </div>
       </nav>
     </>
